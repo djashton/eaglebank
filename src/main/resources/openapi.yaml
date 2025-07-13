@@ -669,7 +669,7 @@ components:
       properties:
         accountNumber:
           type: string
-          format: ^01\d{6}$
+          pattern: ^01\d{6}$
           examples:
             - "01234567"
             - "01765432"
@@ -770,7 +770,7 @@ components:
           type: string
         userId:
           type: string
-          format: ^usr-[A-Za-z0-9]+$
+          pattern: ^usr-[A-Za-z0-9]+$
           examples: 
             - usr-abc123
         createdTimestamp:
@@ -810,7 +810,7 @@ components:
               type: string
         phoneNumber:
           type: string
-          format: ^\+[1-9]\d{1,14}$
+          pattern: ^\+[1-9]\d{1,14}$
         email:
           type: string
           format: email    
@@ -843,7 +843,7 @@ components:
               type: string
         phoneNumber:
           type: string
-          format: ^\+[1-9]\d{1,14}$
+          pattern: ^\+[1-9]\d{1,14}$
         email:
           type: string
           format: email
@@ -860,7 +860,7 @@ components:
       properties:
         id:
           type: string
-          format: ^usr-[A-Za-z0-9]+$
+          pattern: ^usr-[A-Za-z0-9]+$
         name:
           type: string
           examples:
@@ -887,7 +887,7 @@ components:
               type: string
         phoneNumber:
           type: string
-          format: ^\+[1-9]\d{1,14}$
+          pattern: ^\+[1-9]\d{1,14}$
         email:
           type: string
           format: email
