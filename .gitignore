@@ -1,5 +1,15 @@
 # Compiled class file
 *.class
+*.DS_Store
+
+# Target files
+target/
+target/*
+
+# Project files
+.eclipse
+.classpath
+.idea
 
 # Log file
 *.log
