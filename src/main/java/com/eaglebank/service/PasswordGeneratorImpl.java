@@ -1,14 +1,16 @@
-package com.eaglebank.auth;
+package com.eaglebank.service;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class PasswordGenerator {
+@Service
+public class PasswordGeneratorImpl implements PasswordGenerator {
 
-  public static String generatePassword() {
+  public String generatePassword() {
     String upperCaseLetters = RandomStringUtils.secure().next(2, 65, 90, true, true);
     String lowerCaseLetters = RandomStringUtils.secure().next(2, 97, 122, true, true);
     String numbers = RandomStringUtils.secure().nextNumeric(2);

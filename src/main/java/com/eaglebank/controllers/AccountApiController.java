@@ -5,8 +5,6 @@ import com.eaglebank.model.BankAccountResponse;
 import com.eaglebank.model.CreateBankAccountRequest;
 import com.eaglebank.model.ListBankAccountsResponse;
 import com.eaglebank.model.UpdateBankAccountRequest;
-import com.eaglebank.service.BankAccountService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 

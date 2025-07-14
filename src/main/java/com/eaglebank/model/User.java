@@ -1,9 +1,6 @@
 package com.eaglebank.model;
 
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -35,10 +32,10 @@ public class User {
   @NotBlank
   private String phoneNumber;
 
-  @NotBlank
+  @Column(nullable = false, unique = true)
   private String email;
 
-  @NotBlank
+  @Column(nullable = false)
   private String password;
 
   @Valid

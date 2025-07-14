@@ -1,6 +1,5 @@
 package com.eaglebank.service;
 
-import com.eaglebank.auth.PasswordGenerator;
 import com.eaglebank.mapper.CreateUserRequestMapper;
 import com.eaglebank.mapper.UserResponseMapper;
 import com.eaglebank.model.CreateUserRequest;
@@ -21,8 +20,12 @@ public class UserServiceImpl implements UserService {
 
   Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
+
   @Autowired
   private CreateUserRequestMapper userMapper;
+
+  @Autowired
+  private UserDetailsService userDetailsService;
 
   @Autowired
   private UserResponseMapper userResponseMapper;
@@ -32,6 +35,9 @@ public class UserServiceImpl implements UserService {
 
   @Autowired
   private BCryptPasswordEncoder encoder;
+
+  @Autowired
+  private PasswordGenerator passwordGenerator;
 
   @Override
   public UserResponse createUser(CreateUserRequest request) {
@@ -43,7 +49,7 @@ public class UserServiceImpl implements UserService {
     User user = userMapper.toEntity(request);
     user.setId(id);
 
-    String password = PasswordGenerator.generatePassword();
+    String password = passwordGenerator.generatePassword();
     String bcryptPassword = encoder.encode(password);
     user.setPassword(bcryptPassword);
     OffsetDateTime now = OffsetDateTime.now();
@@ -51,9 +57,16 @@ public class UserServiceImpl implements UserService {
     user.setUpdatedTimestamp(now);
 
     User storedUser = userRepository.save(user);
-    logger.info("User Created with Id {}: name {}} password emailed is {}",
+    logger.info("***User Created with Id {}: name {} password emailed is {}",
         user.getId(), user.getName(), password);
 
+    return userResponseMapper.toDto(storedUser);
+  }
+
+  @Override
+  public UserResponse fetchUserById(String userId) {
+
+    User storedUser = userDetailsService.findUserById(userId);
     return userResponseMapper.toDto(storedUser);
   }
 }

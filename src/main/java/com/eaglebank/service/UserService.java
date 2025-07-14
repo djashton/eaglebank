@@ -5,4 +5,6 @@ import com.eaglebank.model.UserResponse;
 
 public interface UserService {
   UserResponse createUser(CreateUserRequest request);
+
+  UserResponse fetchUserById(String userId);
 }
