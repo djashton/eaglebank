@@ -1,5 +1,6 @@
 package com.eaglebank.service;
 
+import com.eaglebank.exception.ConflictException;
 import com.eaglebank.mapper.CreateUserRequestMapper;
 import com.eaglebank.mapper.UpdateUserRequestMapper;
 import com.eaglebank.mapper.UserResponseMapper;
@@ -7,6 +8,7 @@ import com.eaglebank.model.CreateUserRequest;
 import com.eaglebank.model.UpdateUserRequest;
 import com.eaglebank.model.User;
 import com.eaglebank.model.UserResponse;
+import com.eaglebank.repository.BankAccountRepository;
 import com.eaglebank.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,6 +45,9 @@ public class UserServiceImpl implements UserService {
 
   @Autowired
   private PasswordGenerator passwordGenerator;
+
+  @Autowired
+  private BankAccountService bankAccountService;
 
   @Override
   public UserResponse createUser(CreateUserRequest request) {
@@ -84,5 +89,12 @@ public class UserServiceImpl implements UserService {
 
     User storedUser = userRepository.save(updatedUser);
     return userResponseMapper.toDto(storedUser);
+  }
+
+  public void deleteUser(String userId) {
+    if (!bankAccountService.fetchBankAccountsByUserId(userId).isEmpty()) {
+      throw new ConflictException("User " + userId + " has open bank accounts");
+    }
+    userRepository.deleteById(userId);
   }
 }

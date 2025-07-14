@@ -6,7 +6,6 @@ import com.eaglebank.model.CreateUserRequest;
 import com.eaglebank.model.UpdateUserRequest;
 import com.eaglebank.model.User;
 import com.eaglebank.model.UserResponse;
-import com.eaglebank.service.UserDetailsService;
 import com.eaglebank.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +30,10 @@ public class UserApiController implements UserApi {
 
   @Override
   public ResponseEntity<Void> deleteUserByID(String userId) {
-    return UserApi.super.deleteUserByID(userId);
+    UserResponse userResponse = getUserForId(userId);
+
+    userService.deleteUser(userId);
+    return ResponseEntity.ok().build();
   }
 
   @Override

@@ -133,4 +133,9 @@ public class UserRequestTest {
     // 3) Use the jwt for user 1 to call the PATCH /v1/users{user 2 userId} endpoint
     // 4) Response is a FORBIDDEN
   }
+
+  @Test
+  public void deleteUserNoBankAccounts() throws Exception {
+    // Tested in PostMan
+  }
 }

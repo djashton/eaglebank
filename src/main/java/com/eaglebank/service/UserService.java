@@ -10,4 +10,6 @@ public interface UserService {
   UserResponse fetchUserById(String userId);
 
   UserResponse updateUserById(String userId, UpdateUserRequest request);
+
+  void deleteUser(String userId);
 }

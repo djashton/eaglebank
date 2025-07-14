@@ -26,6 +26,14 @@ public class BankAccount {
   @NotBlank
   private String sortCode;
 
+  @ManyToOne
+  @JoinColumn(
+      name = "userId",
+      referencedColumnName = "Id",
+      nullable = false
+  )
+  private User user;
+
   @NotBlank
   private String name;
 

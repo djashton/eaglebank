@@ -1,5 +1,6 @@
 package com.eaglebank.advice;
 
+import com.eaglebank.exception.ConflictException;
 import com.eaglebank.exception.ForbiddenException;
 import com.eaglebank.exception.UserNotFoundException;
 import com.eaglebank.model.ErrorResponse;
@@ -41,6 +42,12 @@ public class ValidationExceptionHandler {
   public ResponseEntity<ErrorResponse> handleForbidden(Exception ex) {
     ErrorResponse error = new ErrorResponse("Forbidden");
     return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
+  }
+
+  @ExceptionHandler(ConflictException.class)
+  public ResponseEntity<ErrorResponse> handleConflict(Exception ex) {
+    ErrorResponse error = new ErrorResponse(ex.getMessage());
+    return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
   }
 
   @ExceptionHandler(Exception.class)
