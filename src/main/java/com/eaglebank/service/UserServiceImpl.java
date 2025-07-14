@@ -1,8 +1,10 @@
 package com.eaglebank.service;
 
 import com.eaglebank.mapper.CreateUserRequestMapper;
+import com.eaglebank.mapper.UpdateUserRequestMapper;
 import com.eaglebank.mapper.UserResponseMapper;
 import com.eaglebank.model.CreateUserRequest;
+import com.eaglebank.model.UpdateUserRequest;
 import com.eaglebank.model.User;
 import com.eaglebank.model.UserResponse;
 import com.eaglebank.repository.UserRepository;
@@ -22,7 +24,10 @@ public class UserServiceImpl implements UserService {
 
 
   @Autowired
-  private CreateUserRequestMapper userMapper;
+  private CreateUserRequestMapper createUserMapper;
+
+  @Autowired
+  private UpdateUserRequestMapper updateUserRequestMapper;
 
   @Autowired
   private UserDetailsService userDetailsService;
@@ -46,7 +51,7 @@ public class UserServiceImpl implements UserService {
     // It should be using a JPA custom generator instead
     String id = "usr-" + UUID.randomUUID().toString().replace("-", "");
 
-    User user = userMapper.toEntity(request);
+    User user = createUserMapper.toEntity(request);
     user.setId(id);
 
     String password = passwordGenerator.generatePassword();
@@ -57,16 +62,27 @@ public class UserServiceImpl implements UserService {
     user.setUpdatedTimestamp(now);
 
     User storedUser = userRepository.save(user);
-    logger.info("***User Created with Id {}: name {} password emailed is {}",
-        user.getId(), user.getName(), password);
+    logger.info("***{} Password Emailed for User Id {}: name {}",
+        password, user.getId(), user.getName());
 
     return userResponseMapper.toDto(storedUser);
   }
 
   @Override
   public UserResponse fetchUserById(String userId) {
-
     User storedUser = userDetailsService.findUserById(userId);
+    return userResponseMapper.toDto(storedUser);
+  }
+
+  @Override
+  public UserResponse updateUserById(String userId, UpdateUserRequest request) {
+    User existingUser = userDetailsService.findUserById(userId);
+
+    User updatedUser = updateUserRequestMapper.toEntity(request);
+    updatedUser.setId(userId);
+    updatedUser.setPassword(existingUser.getPassword());
+
+    User storedUser = userRepository.save(updatedUser);
     return userResponseMapper.toDto(storedUser);
   }
 }

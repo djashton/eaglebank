@@ -23,9 +23,6 @@ public class UserApiController implements UserApi {
   @Autowired
   private UserService userService;
 
-  @Autowired
-  private UserDetailsService userDetailsService;
-
   @Override
   public ResponseEntity<UserResponse> createUser(@Valid CreateUserRequest createUserRequest) {
     UserResponse userResponse = userService.createUser(createUserRequest);
@@ -39,6 +36,19 @@ public class UserApiController implements UserApi {
 
   @Override
   public ResponseEntity<UserResponse> fetchUserByID(String userId) {
+    UserResponse userResponse = getUserForId(userId);
+    return ResponseEntity.ok(userResponse);
+  }
+
+  @Override
+  public ResponseEntity<UserResponse> updateUserByID(String userId, UpdateUserRequest updateUserRequest) {
+    UserResponse user = getUserForId(userId);
+
+    UserResponse userResponse = userService.updateUserById(userId, updateUserRequest);
+    return ResponseEntity.ok(userResponse);
+  }
+
+  private UserResponse getUserForId(String userId) {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     User loggedInUser = (User) authentication.getPrincipal();
 
@@ -49,11 +59,7 @@ public class UserApiController implements UserApi {
     if (!loggedInUser.getId().equals(userId)) {
       throw new ForbiddenException("Forbidden");
     }
-    return ResponseEntity.ok(userResponse);
+    return userResponse;
   }
 
-  @Override
-  public ResponseEntity<UserResponse> updateUserByID(String userId, UpdateUserRequest updateUserRequest) {
-    return UserApi.super.updateUserByID(userId, updateUserRequest);
-  }
 }

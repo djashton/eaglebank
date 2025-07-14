@@ -105,4 +105,32 @@ public class UserRequestTest {
     // Tested through PostMan
     // Need to implement the actual test here
   }
+
+  @Test
+  public void updateUserDetails() throws Exception {
+    // Tested through PostMan
+    // 1) Create User POST /v1/users
+    // 2) Login with the email and password
+    // 3) Use the jwt to call the PATCH /v1/users/{userId} endpoint
+    // 4) GET /v1/users/{userId} to check the update has occurred
+  }
+
+  @Test
+  public void updateNonExistentUser() throws Exception {
+    // Tested through PostMan
+    // 1) Create User POST /v1/users
+    // 2) Login with the email and password
+    // 3) Use the jwt to call the PATCH /v1/users{non-existent userId} endpoint
+    // 4) Response is a NOTFOUND
+  }
+
+  @Test
+  public void updateAuthorisedOnADifferentUser() throws Exception {
+    // Tested through PostMan
+    // 1) Create User POST /v1/users
+    // 2) Login with the email and password to get JWT
+    // 3) Create a second user with POST /v1/users but do not login
+    // 3) Use the jwt for user 1 to call the PATCH /v1/users{user 2 userId} endpoint
+    // 4) Response is a FORBIDDEN
+  }
 }
